@@ -5,6 +5,12 @@ import functions as fnc
 
 ##  global varibles
 
+
+txt_dir_test="/home/bartosz/Pulpit/przepisnik/local/txt_test/"
+csv_dir_test="/home/bartosz/Pulpit/przepisnik/local/csv_test/"
+
+
+
 pdf_dir="/home/bartosz/Pulpit/przepisnik/local/pdfs/"
 txt_dir="/home/bartosz/Pulpit/przepisnik/local/txt_outputs/"
 csv_dir="/home/bartosz/Pulpit/przepisnik/local/csv_outputs/"

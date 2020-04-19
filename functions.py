@@ -16,14 +16,14 @@ def txtToCSV(txt_dir,csv_dir):
         
         #print(filename)
 
-        with open(txt_dir+filename,"r") as txt_file:
-
+        with open(txt_dir+filename,"r+") as txt_file:
+            #print("test")
             DF_list=list()
 
-            current_df=pd.DataFrame({'name': [],
-                                    'type': [],
-                                    'ingredient': [],
-                                    'amount': []})
+            current_df=pd.DataFrame({'name': [""],
+                                    'type': [""],
+                                    'ingredient': [""],
+                                    'amount': [""]})
             
             flag_2_line_meal_name=False
 
@@ -31,6 +31,8 @@ def txtToCSV(txt_dir,csv_dir):
             
             flag_1=False
             flag_2=False
+            flag_3=False
+            flag_4=False
 
             flag_sniad=False
             flag_obiad=False
@@ -55,65 +57,81 @@ def txtToCSV(txt_dir,csv_dir):
 
                 #print("linebyline")
                 if line in ['\n', '\r\n']:
-                    if(flag_meal):
-                        flag_RECIPE_TIME=True
-                    empty_lines_counter+=1
-                    flag_meal_name=False
+                    #print("empty line")
+                    if (flag_1):
+                        #print("test")
+                        if (flag_2):
+                            #print("test")
+                            current_df.at[0,'name']=meal_name.strip()
+                            #print(meal_name,"mealname")
+                            current_df.at[0,'type']=current_recipe
+                            DF_list.append(current_df)
+                            print(current_df)
+                            current_df=current_df[0:0]
+                            flag_1=flag_2=False
+                            recipe_counter+=1
                     continue
 
+                    # if(flag_meal):
+                    #     flag_RECIPE_TIME=True
+                    # empty_lines_counter+=1
+                    # flag_meal_name=False
+                    # continue
+
                 if (flag_2_line_meal_name):
+                    #print("flag2linemealname")
                     meal_name=meal_name+line
                     flag_2_line_meal_name=False
                     continue
-
-                if line.__contains__("Śniadanie"): 
-                    flag_sniad=True
-                    flag_meal=True
-                    flag_meal_name=False
+                if ("śniadanie" in line.lower()): 
+                    #print("śnieadanie")
+                    flag_1=True
                     current_recipe="Śniadanie"
-                    current_df.at['0','type']=current_recipe
+                    #print(current_recipe)
+                    #current_df.at[0,'type']=current_recipe
                     recipe_counter+=1
                     continue
-                if line.__contains__("Obiad"): 
-                    flag_obiad=True
-                    flag_meal=True
-                    flag_meal_name=False
+                if ("obiad" in line.lower()):
+                    #print("obiad") 
+                    flag_1=True
                     recipe_counter+=1
                     current_recipe="Obiad"
-                    current_df.at['0','type']=current_recipe
+                    #current_df.at['0','type']=current_recipe
                     continue
-                if line.__contains__("Podwieczorek"): 
-                    flag_podwi=True
-                    flag_meal=True
-                    flag_meal_name=False
+                if ("podwieczorek" in line.lower()): 
+                    flag_1=True
                     recipe_counter+=1
                     current_recipe="Podwieczorek"
-                    current_df.at['0','type']=current_recipe
+                    #current_df.at['0','type']=current_recipe
                     continue
-                if line.__contains__("Kolacja"): 
-                    flag_kolac=True
-                    flag_meal=True
-                    flag_meal_name=False
+                if ("kolacja" in line.lower()): 
+                    flag_1=True
                     recipe_counter+=1
                     current_recipe="Kolacja"
-                    current_df.at['0','type']=current_recipe
+                    #current_df.at['0','type']=current_recipe
                     continue
-                if line.__contains__("K:"):
+                if ("k:" in line.lower()):
+                    DF_list[recipe_counter_kcal][0,'kcal']=line
+                    flag_3=True
                     recipe_counter_kcal+=1
 
                                    
 
-                if (flag_meal):
+                if (flag_1 and not flag_2):
+                    flag_2=True
 
-                    if not flag_meal_name:
-                        flag_meal_name=True
-                        meal_name=line
-                        current_df.at['0','name']=meal_name
-                        if line.__contains__("("):
-                            flag_2_line_meal_name=True
-                            continue
+                    meal_name=line
+                    #current_df.at[0,'name']=meal_name
+                    #print(meal_name)
+                    if "(" in line:
+                        flag_2_line_meal_name=True
+                    continue
                     # here meal name is known
-                    current_df.at[igredients_counter,'ingredient'],current_df.at[igredients_counter,'amont']=line.split("-")
+                
+                if (flag_2 and flag_1):
+                    current_df.at[igredients_counter,'ingredient'],current_df.at[igredients_counter,'amount']=line.strip().split("-")
+                    igredients_counter+=1
+                    #print(current_df)
                     continue
 
                     
