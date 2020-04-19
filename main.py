@@ -7,11 +7,22 @@ import functions as fnc
 
 pdf_dir="/home/bartosz/Pulpit/przepisnik/local/pdfs/"
 txt_dir="/home/bartosz/Pulpit/przepisnik/local/txt_outputs/"
+csv_dir="/home/bartosz/Pulpit/przepisnik/local/csv_outputs/"
 
 
 if __name__ == "__main__":
 
-    fnc.pdfToTxt(pdf_dir,txt_dir)
+    #fnc.pdfToTxt(pdf_dir,txt_dir)
+
+    #fnc.trimTxt(txt_dir)
+
+    fnc.txtToCSV(txt_dir,csv_dir)
+
+
+
+
+
+
 
 
     # pdfFileObj = open(filename,'rb')
